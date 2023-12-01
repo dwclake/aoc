@@ -1,0 +1,7 @@
+package hello
+
+use core {*}
+
+hello :: () {
+    printf("Hello, world!");
+}
