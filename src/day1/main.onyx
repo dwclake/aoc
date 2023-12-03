@@ -6,20 +6,42 @@
 
 use core {*}
 
+set_digits :: (first: &?u8, final: &?u8, val: u8) {
+    // lazily set first
+    if !(*first) {
+        *first = val;
+    // greedily set final
+    } else {
+        *final = val;
+    }
+}
+
+char_of_word :: (word: str) -> ?u8 {
+    switch word {
+        case "one"   { return '1'; }
+        case "two"   { return '2'; }
+        case "three" { return '3'; }
+        case "four"  { return '4'; }
+        case "five"  { return '5'; }
+        case "six"   { return '6'; }
+        case "seven" { return '7'; }
+        case "eight" { return '8'; }
+        case "nine"  { return '9'; }
+        case "zero"  { return '0'; }
+    }
+}
+
 scan :: (string: str) -> i32 {
     first: ?u8 = .{};
     final: ?u8 = .{};
 
+    words := .[
+        "one", "two", "three", "four", "five", 
+        "six", "seven", "eight", "nine", "zero"
+    ];
+
     result := array.make(u8, 2);
     defer array.free(&result);
-
-    set_digits := (first: &?u8, final: &?u8, val: u8) {
-        if !(*first) {
-            *first = val;
-        } else {
-            *final = val;
-        }
-    };
 
     for i: 0..string.count {
         switch string[i] {
@@ -30,26 +52,11 @@ scan :: (string: str) -> i32 {
             // char is alphabetical
             // need to check for word of digits ie. one, two, ..., nine
             case 'e'..'z' {
-                if "one" == string[i..i+3] {
-                    set_digits(&first, &final, '1');
-                } elseif "two" == string[i..i+3] {
-                    set_digits(&first, &final, '2');
-                } elseif "three" == string[i..i+5] {
-                    set_digits(&first, &final, '3');
-                } elseif "four" == string[i..i+4] {
-                    set_digits(&first, &final, '4');
-                } elseif "five" == string[i..i+4] {
-                    set_digits(&first, &final, '5');
-                } elseif "six" == string[i..i+3] {
-                    set_digits(&first, &final, '6');
-                } elseif "seven" == string[i..i+5] {
-                    set_digits(&first, &final, '7');
-                } elseif "eight" == string[i..i+5] {
-                    set_digits(&first, &final, '8');
-                } elseif "nine" == string[i..i+4] {
-                    set_digits(&first, &final, '9');
-                } elseif "zero" == string[i..i+4] {
-                    set_digits(&first, &final, '0');
+                for word: words {
+                    if string[i..i+word.count] == word {
+                        set_digits(&first, &final, char_of_word(word)?);
+                        break;
+                    }
                 }
             }
         } 
