@@ -19,28 +19,31 @@ scan_word :: (string: str) -> u8 {
 
 scan :: (string: str) -> i32 {
     first: ?u8 = .{};
-    last: ?u8 = .{};
+    final: ?u8 = .{};
 
     result := array.make(u8, 2);
     defer array.free(&result);
 
     for char: string {
         switch char {
-            case 'e'..'t' {
-
-            }
+            // char is a digit
             case '0'..'9' {
                 if !first {
                     first = char;
                 } else {
-                    last = char;
+                    final = char;
                 }
+            }
+            // char is alphabetical
+            // need to check for word of digits ie. one, two, ..., nine
+            case 'e'..'t' {
+
             }
         } 
     }
 
     result << first?;
-    result << last ?? first?;
+    result << final ?? first?;
 
     return cast(i32) conv.parse_int(result);
 }
