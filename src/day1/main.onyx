@@ -1,17 +1,10 @@
+/*  
+    Advent of Code 2023
+    Day 1
+    Trebuchet?!
+*/
+
 use core {*}
-
-calibration_sum :: (path: str) -> Result(i32, os.FileError) {
-    file := os.open(path)?;
-    defer os.close(&file);
-
-    contents := os.get_contents(&file);
-
-    sum := string.split_iter(contents, "\n")
-        |> iter.map(line => scan(line))
-        |> iter.fold(0, (a, b) => a + b);
-
-    return .{Ok = sum};
-}
 
 scan_word :: (string: str) -> u8 {
 
@@ -46,6 +39,19 @@ scan :: (string: str) -> i32 {
     result << final ?? first?;
 
     return cast(i32) conv.parse_int(result);
+}
+
+calibration_sum :: (path: str) -> Result(i32, os.FileError) {
+    file := os.open(path)?;
+    defer os.close(&file);
+
+    contents := os.get_contents(&file);
+
+    sum := string.split_iter(contents, "\n")
+        |> iter.map(line => scan(line))
+        |> iter.fold(0, (a, b) => a + b);
+
+    return .{Ok = sum};
 }
 
 main :: () {
