@@ -6,16 +6,6 @@
 
 use core {*}
 
-set_digits :: (first: &?u8, final: &?u8, val: u8) {
-    // lazily set first
-    if !(*first) {
-        *first = val;
-    // greedily set final
-    } else {
-        *final = val;
-    }
-}
-
 char_of_word :: (word: str) -> ?u8 {
     switch word {
         case "one"   { return '1'; }
@@ -47,14 +37,19 @@ scan :: (string: str) -> i32 {
         switch string[i] {
             // char is a digit
             case '0'..'9' {
-                set_digits(&first, &final, string[i]);
+                if !first { first = string[i]; } else { final = string[i]; }
             }
             // char is alphabetical
             // need to check for word of digits ie. one, two, ..., nine
             case 'e'..'z' {
                 for word: words {
                     if string[i..i+word.count] == word {
-                        set_digits(&first, &final, char_of_word(word)?);
+                        if !first { 
+                            first = char_of_word(word)?; 
+                        } else { 
+                            final = char_of_word(word)?; 
+                        }
+
                         break;
                     }
                 }
