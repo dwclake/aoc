@@ -1,8 +1,0 @@
-#load_path "../.."
-#load "src/hello"
-
-use core {printf}
-
-main :: () {
-    printf("Hello, Onyx\n");
-}
