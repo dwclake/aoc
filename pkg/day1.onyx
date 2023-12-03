@@ -1,9 +1,0 @@
-#load_path ".."
-#load_all "src"
-
-use core {*}
-use hello
-
-main :: () {
-    hello.hello();
-}

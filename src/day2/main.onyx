@@ -1,5 +1,5 @@
-#load_path ".."
-#load_all "src"
+#load_path "../.."
+#load "src/hello"
 
 use core {printf}
 

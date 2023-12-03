@@ -1,0 +1,50 @@
+use core {*}
+
+calibration_sum :: (path: str) -> Result(i32, os.FileError) {
+    file := os.open(path)?;
+    defer os.close(&file);
+
+    contents := os.get_contents(&file);
+
+    sum := string.split_iter(contents, "\n")
+        |> iter.map(line => scan(line))
+        |> iter.fold(0, (a, b) => a + b);
+
+    return .{Ok = sum};
+}
+
+scan_word :: (string: str) -> u8 {
+
+}
+
+scan :: (string: str) -> i32 {
+    first: ?u8 = .{};
+    last: ?u8 = .{};
+
+    result := array.make(u8, 2);
+    defer array.free(&result);
+
+    for char: string {
+        switch char {
+            case 'e'..'t' {
+
+            }
+            case '0'..'9' {
+                if !first {
+                    first = char;
+                } else {
+                    last = char;
+                }
+            }
+        } 
+    }
+
+    result << first?;
+    result << last ?? first?;
+
+    return cast(i32) conv.parse_int(result);
+}
+
+main :: () {
+    printf("Sum of calibrations: {}\n", calibration_sum("src/day1/calibration.txt"));
+}
