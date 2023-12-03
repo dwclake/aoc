@@ -6,10 +6,6 @@
 
 use core {*}
 
-scan_word :: (string: str) -> u8 {
-
-}
-
 scan :: (string: str) -> i32 {
     first: ?u8 = .{};
     final: ?u8 = .{};
@@ -17,20 +13,44 @@ scan :: (string: str) -> i32 {
     result := array.make(u8, 2);
     defer array.free(&result);
 
-    for char: string {
-        switch char {
+    set_digits := (first: &?u8, final: &?u8, val: u8) {
+        if !(*first) {
+            *first = val;
+        } else {
+            *final = val;
+        }
+    };
+
+    for i: 0..string.count {
+        switch string[i] {
             // char is a digit
             case '0'..'9' {
-                if !first {
-                    first = char;
-                } else {
-                    final = char;
-                }
+                set_digits(&first, &final, string[i]);
             }
             // char is alphabetical
             // need to check for word of digits ie. one, two, ..., nine
-            case 'e'..'t' {
-
+            case 'e'..'z' {
+                if "one" == string[i..i+3] {
+                    set_digits(&first, &final, '1');
+                } elseif "two" == string[i..i+3] {
+                    set_digits(&first, &final, '2');
+                } elseif "three" == string[i..i+5] {
+                    set_digits(&first, &final, '3');
+                } elseif "four" == string[i..i+4] {
+                    set_digits(&first, &final, '4');
+                } elseif "five" == string[i..i+4] {
+                    set_digits(&first, &final, '5');
+                } elseif "six" == string[i..i+3] {
+                    set_digits(&first, &final, '6');
+                } elseif "seven" == string[i..i+5] {
+                    set_digits(&first, &final, '7');
+                } elseif "eight" == string[i..i+5] {
+                    set_digits(&first, &final, '8');
+                } elseif "nine" == string[i..i+4] {
+                    set_digits(&first, &final, '9');
+                } elseif "zero" == string[i..i+4] {
+                    set_digits(&first, &final, '0');
+                }
             }
         } 
     }
