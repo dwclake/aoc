@@ -6,6 +6,11 @@
 
 use core {*}
 
+words :: str.[
+    "one", "two", "three", "four", "five", 
+    "six", "seven", "eight", "nine", "zero"
+];
+
 char_of_word :: (word: str) -> ?u8 {
     switch word {
         case "one"   { return '1'; }
@@ -25,11 +30,6 @@ scan :: (string: str) -> i32 {
     first: ?u8 = .{};
     final: ?u8 = .{};
 
-    words := .[
-        "one", "two", "three", "four", "five", 
-        "six", "seven", "eight", "nine", "zero"
-    ];
-
     result := array.make(u8, 2);
     defer array.free(&result);
 
@@ -37,7 +37,11 @@ scan :: (string: str) -> i32 {
         switch string[i] {
             // char is a digit
             case '0'..'9' {
-                if !first { first = string[i]; } else { final = string[i]; }
+                if !first { 
+                    first = string[i]; 
+                } else { 
+                    final = string[i]; 
+                }
             }
             // char is alphabetical
             // need to check for word of digits ie. one, two, ..., nine
