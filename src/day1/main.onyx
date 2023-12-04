@@ -1,8 +1,8 @@
 /*  
-    Advent of Code 2023
-    Day 1
-    Trebuchet?!
-*/
+ * Advent of Code 2023
+ * Day 1
+ * Trebuchet?!
+ */
 
 use core {*}
 
@@ -81,5 +81,5 @@ day1 :: (path: str) -> Result(i32, os.FileError) {
 }
 
 main :: () {
-    printf("Sum of calibrations: {}\n", day1("src/day1/calibration.txt"));
+    printf("Sum of calibrations: {}\n", day1("src/day1/inputs.txt"));
 }

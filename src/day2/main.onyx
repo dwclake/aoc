@@ -1,8 +1,24 @@
-#load_path "../.."
-#load "src/hello"
+/*
+ * Advent of Code 2023
+ * Day 2
+ * Cube Conundrum
+ */
 
-use core {printf}
+use core {*}
+
+day2 :: (path: str) -> Result(i32, os.FileError) {
+    file := os.open(path)?;
+    defer os.close(&file);
+
+    contents := os.get_contents(&file);
+
+    sum := string.split_iter(contents, "\n")
+        |> iter.map(line => 1)
+        |> iter.fold(0, (a, b) => a + b);
+
+    return .{Ok = sum};
+}
 
 main :: () {
-    printf("Hello, Onyx\n");
+    printf("{}", day2("src/day2/inputs.txt"));
 }
