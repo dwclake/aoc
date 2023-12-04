@@ -63,7 +63,7 @@ scan :: (string: str) -> i32 {
     return cast(i32) conv.parse_int(result);
 }
 
-calibration_sum :: (path: str) -> Result(i32, os.FileError) {
+day1 :: (path: str) -> Result(i32, os.FileError) {
     file := os.open(path)?;
     defer os.close(&file);
 
@@ -77,5 +77,5 @@ calibration_sum :: (path: str) -> Result(i32, os.FileError) {
 }
 
 main :: () {
-    printf("Sum of calibrations: {}\n", calibration_sum("src/day1/calibration.txt"));
+    printf("Sum of calibrations: {}\n", day1("src/day1/calibration.txt"));
 }
