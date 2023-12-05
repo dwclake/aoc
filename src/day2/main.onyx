@@ -6,7 +6,9 @@
 
 use core {*}
 
-day2 :: (path: str) -> Result(i32, os.FileError) {
+path :: "src/day2/inputs.txt"
+
+main :: (args: [][&]u8) -> Result(void, any) {
     file := os.open(path)?;
     defer os.close(&file);
 
@@ -16,9 +18,5 @@ day2 :: (path: str) -> Result(i32, os.FileError) {
         |> iter.map(line => 1)
         |> iter.fold(0, (a, b) => a + b);
 
-    return .{Ok = sum};
-}
-
-main :: () {
-    printf("{}\n", day2("src/day2/inputs.txt"));
+    printf("{}\n", sum);
 }

@@ -6,7 +6,9 @@
 
 use core {*}
 
-words :: str.[
+path :: "src/day1/inputs.txt"
+
+words :: .[
     "one", "two", "three", "four", "five", 
     "six", "seven", "eight", "nine", "zero"
 ];
@@ -67,7 +69,7 @@ scan :: (string: str) -> i32 {
     return cast(i32) conv.parse_int(result);
 }
 
-day1 :: (path: str) -> Result(i32, os.FileError) {
+main :: (args: [][&]u8) -> Result(void, any) {
     file := os.open(path)?;
     defer os.close(&file);
 
@@ -77,9 +79,5 @@ day1 :: (path: str) -> Result(i32, os.FileError) {
         |> iter.map(line => scan(line))
         |> iter.fold(0, (a, b) => a + b);
 
-    return .{Ok = sum};
-}
-
-main :: () {
-    printf("Sum of calibrations: {}\n", day1("src/day1/inputs.txt"));
+    printf("Sum of calibrations: {}\n", sum);
 }
