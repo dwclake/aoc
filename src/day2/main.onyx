@@ -8,7 +8,7 @@ use core {*}
 
 path :: "src/day2/inputs.txt"
 
-main :: (args: [][&]u8) -> Result(void, any) {
+main :: (_: [][&]u8) -> Result(void, any) {
     file := os.open(path)?;
     defer os.close(&file);
 
