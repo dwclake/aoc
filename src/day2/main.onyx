@@ -20,5 +20,5 @@ day2 :: (path: str) -> Result(i32, os.FileError) {
 }
 
 main :: () {
-    printf("{}", day2("src/day2/inputs.txt"));
+    printf("{}\n", day2("src/day2/inputs.txt"));
 }
