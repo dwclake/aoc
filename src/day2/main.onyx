@@ -69,7 +69,7 @@ scan :: (line: str) -> Game {
     return game;
 }
 
-check :: (game: &Game, nblue: i64, ngreen: i64, nred: i64) -> bool {
+check :: (game: Game, nblue: i64, ngreen: i64, nred: i64) -> bool {
     for subset: game.set {
         if subset.blue > nblue || subset.green > ngreen || subset.red > nred {
             return false;
@@ -90,15 +90,13 @@ main :: (_: [][&]u8) -> Result(void, os.FileError) {
     nred :: cast(i64) 12;
 
     games := string.split_iter(contents, '\n')
-        |> iter.map(scan)
-        |> iter.collect();
+        |> iter.map(scan);
 
     defer for game: games {
         array.free(&game.set);
     }
     
     sum := games
-        |> iter.as_iter()
         |> iter.filter(game => check(game, nblue, ngreen, nred))
         |> iter.map(game => game.id)
         |> iter.fold(cast(i64) 0, (a, b) => a + b);
