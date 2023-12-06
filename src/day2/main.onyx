@@ -69,6 +69,49 @@ scan :: (line: str) -> Game {
     return game;
 }
 
+scan2 :: (line: str) -> i64 {
+    power: i64 = 1;
+    blue: i64 = 0;
+    green: i64 = 0;
+    red: i64 = 0;
+    
+    // split the game into two sections: game id, set
+    info := line 
+        |> string.split_iter(':')
+        |> iter.collect();
+
+    // split set into subsets
+    set := info[1]
+        |> string.split(';');
+
+    // for each subset, parse the count for each colour
+    for subset: set {
+        // split the subset into colours
+        colours := string.split(subset, ',');
+
+        // for each pair of (count, colour) parse the count and store it 
+        // in the corresponding variable
+        for pair: colours {
+            split := pair
+                |> string.trim_start(' ')
+                |> string.split(' ');
+
+            count := split[0]
+                |> conv.parse_int();
+
+            switch split[1] {
+                case "blue" { blue = math.max(blue, count); }
+                case "green" { green = math.max(green, count); }
+                case "red" { red = math.max(red, count); }
+            }
+        }
+    }
+
+    power = blue * red * green;
+
+    return power;
+}
+
 check :: (game: Game, nblue: i64, ngreen: i64, nred: i64) -> bool {
     for subset: game.set {
         if subset.blue > nblue || subset.green > ngreen || subset.red > nred {
@@ -101,5 +144,11 @@ main :: (_: any) -> Result(void, os.FileError) {
         |> iter.map(game => game.id)
         |> iter.fold(cast(i64) 0, (a, b) => a + b);
 
-    printf("{}\n", sum);
+    printf("part 1: {}\n", sum);
+    
+    sum2 := string.split_iter(contents, '\n')
+        |> iter.map(scan2)
+        |> iter.fold(cast(i64) 0, (a, b) => a + b);
+    
+    printf("part 2: {}\n", sum2);
 }
