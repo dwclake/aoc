@@ -1,0 +1,18 @@
+/*
+ * Advent of Code 2023
+ * Day 3
+ * Gear Ratios
+ */
+
+use core {*}
+
+path :: "src/day3/inputs.txt"
+
+main :: (_: any) -> Result(void, any) {
+    file := os.open(path)?;
+    defer os.close(&file);
+
+    contents := os.get_contents(&file);
+
+    printf(contents);
+}
