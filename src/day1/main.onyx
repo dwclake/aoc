@@ -75,8 +75,8 @@ main :: (_: [][&]u8) -> Result(void, os.FileError) {
 
     contents := os.get_contents(&file);
 
-    sum := string.split_iter(contents, "\n")
-        |> iter.map(line => scan(line))
+    sum := string.split_iter(contents, '\n')
+        |> iter.map(scan)
         |> iter.fold(0, (a, b) => a + b);
 
     printf("Sum of calibrations: {}\n", sum);

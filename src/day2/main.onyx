@@ -8,15 +8,100 @@ use core {*}
 
 path :: "src/day2/inputs.txt"
 
+Subset :: struct {
+    blue: i64 = 0;
+    green: i64 = 0;
+    red: i64 = 0;
+}
+
+Game :: struct {
+    id: i64 = 0;
+    set: [..]Subset;
+}
+
+scan :: (line: str) -> Game {
+    game := Game.{};
+    array.init(&game.set);
+    
+    // split the game into two sections: game id, set
+    info := line 
+        |> string.split_iter(':')
+        |> iter.collect();
+
+    // parse game id
+    game.id = string.split(info[0], ' ')[1]
+        |> conv.parse_int();
+
+    // split set into subsets
+    set := info[1]
+        |> string.split(';');
+
+    // for each subset, parse the count for each colour
+    for subset: set {
+        blue: i64 = 0;
+        green: i64 = 0;
+        red: i64 = 0;
+
+        // split the subset into colours
+        colours := string.split(subset, ',');
+
+        // for each pair of (count, colour) parse the count and store it 
+        // in the corresponding variable
+        for pair: colours {
+            split := pair
+                |> string.trim_start(' ')
+                |> string.split(' ');
+
+            count := split[0]
+                |> conv.parse_int();
+
+            switch split[1] {
+                case "blue" { blue = count; }
+                case "green" { green = count; }
+                case "red" { red = count; }
+            }
+        }
+
+        // append subset to game.set
+        game.set << Subset.{blue, green, red};
+    }
+
+    return game;
+}
+
+check :: (game: &Game, nblue: i64, ngreen: i64, nred: i64) -> bool {
+    for subset: game.set {
+        if subset.blue > nblue || subset.green > ngreen || subset.red > nred {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 main :: (_: [][&]u8) -> Result(void, os.FileError) {
     file := os.open(path)?;
     defer os.close(&file);
 
     contents := os.get_contents(&file);
 
-    sum := string.split_iter(contents, "\n")
-        |> iter.map(line => 1)
-        |> iter.fold(0, (a, b) => a + b);
+    nblue :: cast(i64) 14;
+    ngreen :: cast(i64) 13;
+    nred :: cast(i64) 12;
+
+    games := string.split_iter(contents, '\n')
+        |> iter.map(scan)
+        |> iter.collect();
+
+    defer for game: games {
+        array.free(&game.set);
+    }
+    
+    sum := games
+        |> iter.as_iter()
+        |> iter.filter(game => check(game, nblue, ngreen, nred))
+        |> iter.map(game => game.id)
+        |> iter.fold(cast(i64) 0, (a, b) => a + b);
 
     printf("{}\n", sum);
 }
