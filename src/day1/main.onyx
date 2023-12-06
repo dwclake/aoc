@@ -69,7 +69,7 @@ scan :: (string: str) -> i32 {
     return cast(i32) conv.parse_int(result);
 }
 
-main :: (_: [][&]u8) -> Result(void, any) {
+main :: (_: [][&]u8) -> Result(void, os.FileError) {
     file := os.open(path)?;
     defer os.close(&file);
 
