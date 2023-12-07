@@ -51,7 +51,15 @@ check_elem :: (lines: []str, i: i32, j: i32) -> bool {
     return result;
 }
 
-check_elems :: (lines: []str, i: i32, j: i32, jf: i32, x: i32, xmax: i32, result: bool) -> bool {
+check_elems :: (
+    lines: []str, 
+    i: i32, 
+    j: i32, 
+    jf: i32, 
+    x: i32, 
+    xmax: i32, 
+    result: bool
+) -> bool {
     while x <= xmax {
         while y := -1; y <= 1 {
             result = result 
