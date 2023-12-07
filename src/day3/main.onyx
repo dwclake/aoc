@@ -8,11 +8,122 @@ use core {*}
 
 path :: "src/day3/inputs.txt"
 
+parse_num :: (line: str, idx: &i32) -> i64 {
+    string: [..]u8 = array.make(u8, 10);
+    defer array.free(&string);
+
+    num: i64;
+    start := *idx;
+    end := start;
+
+    for i: start..line.count {
+        switch line[i] {
+            case '0'..'9' do end += 1;
+            case #default {
+                num = line[start..end]
+                    |> conv.parse_int();
+
+                *idx = end;
+                return num;
+            }
+        }
+    }
+
+    num = line[start..end]
+        |> conv.parse_int();
+
+    *idx = end;
+    return num;
+}
+
+check_elem :: (lines: []str, i: i32, j: i32) -> bool {
+    result := false; 
+
+    switch lines[i][j] {
+        case '0'..'9' do fallthrough;
+        case '.' do result = false;
+        case #default {
+            result = true;
+            return result;
+        }
+    }
+
+    return result;
+}
+
+check_elems :: (lines: []str, i: i32, j: i32, jf: i32, x: i32, xmax: i32, result: bool) -> bool {
+    while x <= xmax {
+        while y := -1; y <= 1 {
+            result = result 
+                || check_elem(lines, i + x, math.max(0, j + y))
+                || check_elem(lines, i + x, math.min(lines.count - 2, jf + y));
+
+            y += 1;
+        }
+        x += 1;
+    }
+
+    return result;
+}
+
+check :: (lines: []str, i: i32, j: i32, jf: i32) -> bool {
+    result := false;
+
+    if i == 0 {
+        result = check_elems(lines, i, j, jf, 0, 1, result);
+    } elseif i == lines.count - 2 {
+        result = check_elems(lines, i, j, jf, -1, 0, result);
+    } else {
+        result = check_elems(lines, i, j, jf, -1, 1, result);
+    }
+
+    return result;
+}
+
+scan :: (lines: []str) -> i64 {
+    sum: i64 = 0;
+    num: ?i64;
+
+    for i: 0..lines.count {
+        num = .{};
+
+        for j: 0..lines[i].count {
+            switch lines[i][j] {
+                case '0'..'9' {
+                    ji := j;
+                    jf := j;
+                    defer j = jf;
+
+                    val := parse_num(lines[i], &jf);
+                    switch check(lines, i, j, jf - 1) {
+                        case true {
+                            num = .{Some = val};
+                        }
+                        case false do continue;
+                    }
+
+                }
+                case #default do continue;
+            }
+
+            if num {
+                sum += num?;
+                num = .{};
+            }
+        }
+    }
+
+    return sum;
+}
+
 main :: (_: any) -> Result(void, any) {
     file := os.open(path)?;
     defer os.close(&file);
 
     contents := os.get_contents(&file);
 
-    printf(contents);
+    lines := contents
+        |> string.split('\n');
+
+    printf("{}\n", scan(lines));
 }
