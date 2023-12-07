@@ -100,12 +100,9 @@ scan :: (lines: []str) -> i64 {
 
                     val := parse_num(lines[i], &jf);
                     switch check(lines, i, j, jf - 1) {
-                        case true {
-                            num = .{Some = val};
-                        }
+                        case true do num = .{Some = val};
                         case false do continue;
                     }
-
                 }
                 case #default do continue;
             }
