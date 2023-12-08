@@ -56,9 +56,9 @@ scan :: (line: str) -> Game {
                 |> conv.parse_int();
 
             switch split[1] {
-                case "blue" { blue = count; }
-                case "green" { green = count; }
-                case "red" { red = count; }
+                case "blue" do blue = count;
+                case "green" do green = count;
+                case "red" do red = count;
             }
         }
 
@@ -100,9 +100,9 @@ scan2 :: (line: str) -> i64 {
                 |> conv.parse_int();
 
             switch split[1] {
-                case "blue" { blue = math.max(blue, count); }
-                case "green" { green = math.max(green, count); }
-                case "red" { red = math.max(red, count); }
+                case "blue" do blue = math.max(blue, count); 
+                case "green" do green = math.max(green, count);
+                case "red" do red = math.max(red, count);
             }
         }
     }
