@@ -122,7 +122,7 @@ check :: (game: Game, nblue: i64, ngreen: i64, nred: i64) -> bool {
     return true;
 }
 
-main :: (_: any) -> Result(void, os.FileError) {
+main :: (args: [][&]u8) -> Result(void, os.FileError) {
     file := os.open(path)?;
     defer os.close(&file);
 

@@ -117,7 +117,7 @@ scan :: (lines: []str) -> i64 {
     return sum;
 }
 
-main :: (_: any) -> Result(void, any) {
+main :: (args: [][&]u8) -> Result(void, os.FileError) {
     file := os.open(path)?;
     defer os.close(&file);
 
