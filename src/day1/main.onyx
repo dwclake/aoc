@@ -80,4 +80,6 @@ main :: (args: [][&]u8) -> Result(void, os.FileError) {
         |> iter.fold(0, (a, b) => a + b);
 
     printf("Sum of calibrations: {}\n", sum);
+
+    return .Ok;
 }

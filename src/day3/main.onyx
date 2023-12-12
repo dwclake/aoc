@@ -127,4 +127,6 @@ main :: (args: [][&]u8) -> Result(void, os.FileError) {
         |> string.split('\n');
 
     printf("{}\n", scan(lines));
+
+    return .Ok;
 }

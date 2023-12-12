@@ -151,4 +151,6 @@ main :: (args: [][&]u8) -> Result(void, os.FileError) {
         |> iter.fold(cast(i64) 0, (a, b) => a + b);
     
     printf("part 2: {}\n", sum2);
+
+    return .Ok;
 }
