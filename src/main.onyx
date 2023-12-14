@@ -9,7 +9,7 @@ counter: i32
 main :: () {
     hello : str = "hello";
 
-    thread_task :: [hello](_: rawptr) {
+    thread_task :: (_: rawptr) {
         for 0..10000 {
             counter += 1;
         }
