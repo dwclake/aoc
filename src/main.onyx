@@ -1,0 +1,28 @@
+use core.thread
+use core.iter
+use core {println}
+
+#thread_local
+counter: i32
+
+thread_task :: (_: rawptr) {
+    for 0..10000 {
+        counter += 1;
+    }
+
+    println(counter);
+}
+
+main :: () {
+    threads := iter.as_iter(0..16)
+        |> iter.map(_ => {
+            t := new(thread.Thread);
+            thread.spawn(t, cast(&void) null, thread_task);
+            return t;
+        })
+        |> iter.collect();
+
+    for t: threads {
+        thread.join(t);
+    }
+}
