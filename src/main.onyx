@@ -5,16 +5,18 @@ use core {printf}
 #thread_local
 counter: i32
 
-thread_task :: (_: rawptr) {
-    for 0..10000 {
-        counter += 1;
-    }
-
-    printf("{}\n", counter);
-}
 
 main :: () {
     hello : str = "hello";
+
+    thread_task :: [hello](_: rawptr) {
+        for 0..10000 {
+            counter += 1;
+        }
+
+        printf("{}\n", counter);
+    }
+
     context->set_user_data(&hello);
     threads := iter.as_iter(0..16)
         |> iter.map(_ => {
