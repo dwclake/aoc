@@ -9,9 +9,6 @@ use core {*}
 path :: "src/day3/inputs.txt"
 
 parse_num :: (line: str, idx: &i32) -> i64 {
-    string: [..]u8 = array.make(u8, 10);
-    defer array.free(&string);
-
     num: i64;
     start := *idx;
     end := start;
